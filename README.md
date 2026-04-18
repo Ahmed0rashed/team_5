@@ -1,75 +1,114 @@
-# Class-track
+# Class Track Backend
 
-Full-stack application for managing classes: students, sessions, attendance (including QR scanning), grades, finance, messaging, reports, and admin workflows. This repository is a **monorepo** with a Node.js API and a Next.js web app.
+A production-ready Node.js backend application built with Express.js following MVC architecture.
 
-## Repository layout
+## 🏗️ Architecture
 
-| Path                       | Description                                |
-| -------------------------- | ------------------------------------------ |
-| [`Backend/`](./Backend/)   | Express + MongoDB REST API (MVC)           |
-| [`Frontend/`](./Frontend/) | Next.js (App Router) dashboard and portals |
+This project follows the **MVC (Model-View-Controller)** pattern with additional layers for better separation of concerns:
 
-## Tech stack
-
-- **Backend:** Node.js 18+, Express, Mongoose, JWT, bcrypt, Nodemailer, Helmet, CORS
-- **Frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS 4, PWA (offline-oriented features), Axios
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org/) **18 or newer**
-- [MongoDB](https://www.mongodb.com/) (local instance or [Atlas](https://www.mongodb.com/cloud/atlas))
-
-## Quick start (local)
-
-### 1. Backend
-
-```bash
-cd Backend
-npm install
+```
+src/
+├── config/        # Database connection, environment config
+├── models/        # Mongoose schemas (data layer)
+├── controllers/   # Business logic handlers
+├── routes/        # Express route definitions
+├── middlewares/   # Auth, validation, error handling
+├── services/      # Reusable business logic
+├── utils/         # Helper functions
+└── app.js         # Express app configuration
 ```
 
-Create `Backend/.env` with at least:
+## 🚀 Getting Started
 
-- `MONGODB_URI` — connection string (defaults to `mongodb://localhost:27017/class_track_db` if unset in development)
-- `JWT_SECRET` — secret for signing tokens (required in production)
-- `PORT` — optional; default **5000**
+### Prerequisites
 
-Start the API:
+- Node.js >= 18.0.0
+- MongoDB (local or Atlas)
+- npm or yarn
 
-```bash
-npm run dev
-```
+### Installation
 
-API base URL for local use: `http://localhost:5000/api`.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create environment file:
+   ```bash
+   cp .env.example .env
+   ```
+4. Update `.env` with your configuration
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-More detail: [Backend/README.md](./Backend/README.md) (endpoints, security).
+## 📚 API Endpoints
 
-### 2. Frontend
+### Authentication
 
-In a second terminal:
+| Method | Endpoint             | Description       | Auth Required |
+| ------ | -------------------- | ----------------- | ------------- |
+| POST   | `/api/auth/register` | Register new user | No            |
+| POST   | `/api/auth/login`    | Login user        | No            |
+| GET    | `/api/auth/profile`  | Get current user  | Yes           |
+| POST   | `/api/auth/logout`   | Logout user       | Yes           |
 
-```bash
-cd Frontend
-npm install
-npm run dev
-```
+## 🔧 Environment Variables
 
-Open [http://localhost:3000](http://localhost:3000).
+| Variable         | Description               | Default     |
+| ---------------- | ------------------------- | ----------- |
+| `NODE_ENV`       | Environment mode          | development |
+| `PORT`           | Server port               | 5000        |
+| `MONGODB_URI`    | MongoDB connection string | -           |
+| `JWT_SECRET`     | JWT signing secret        | -           |
+| `JWT_EXPIRES_IN` | Token expiration          | 7d          |
 
-By default in development the UI talks to `http://localhost:5000/api`. To point the dev app at a remote API, set `NEXT_PUBLIC_USE_REMOTE_API=true` and `NEXT_PUBLIC_API_URL` (see [Frontend/README.md](./Frontend/README.md) and `Frontend/src/lib/constants.ts`).
+## 🔒 Security Features
 
-For production builds, set `NEXT_PUBLIC_API_URL` to your deployed API origin (including `/api` path as used by the app).
+- **Helmet** - Sets security HTTP headers
+- **CORS** - Configurable cross-origin requests
+- **bcrypt** - Password hashing
+- **JWT** - Stateless authentication
 
-## Docker
+## 🚀 Deploying to Vercel
 
-Each app has its own `Dockerfile` (`Backend/Dockerfile`, `Frontend/Dockerfile`). Build and run them separately, passing the same environment variables you would use on bare metal. There is no root `docker-compose` file in this repo; compose one locally if you want a single command to run both services and MongoDB.
+لرفع الـ Backend على Vercel، اتبع الخطوات في ملف [VERCEL_SETUP.md](./VERCEL_SETUP.md)
 
-## Documentation pointers
+**ملخص سريع:**
 
-- Backend CORS: [Backend/CORS_SETUP.md](./Backend/CORS_SETUP.md)
-- Backend on Vercel: [Backend/VERCEL_SETUP.md](./Backend/VERCEL_SETUP.md)
-- Frontend on Vercel: [Frontend/VERCEL_DEPLOYMENT.md](./Frontend/VERCEL_DEPLOYMENT.md)
+1. أضف متغيرات البيئة في Vercel Dashboard:
+   - `MONGODB_URI` (مطلوب)
+   - `JWT_SECRET` (مطلوب)
+   - `CORS_ORIGINS` (اختياري)
+2. تأكد من إعداد MongoDB Atlas Network Access
+3. ارفع المشروع على Vercel
+4. استخدم `/api` كـ base path للـ API
 
-## License
+- **Input Validation** - Request validation with express-validator
 
-See package metadata in `Backend/package.json` and `Frontend/package.json` (project-specific license terms may differ per package).
+## 🔄 Switching to PostgreSQL
+
+To use PostgreSQL instead of MongoDB:
+
+1. Install Sequelize:
+
+   ```bash
+   npm uninstall mongoose
+   npm install sequelize pg pg-hstore
+   ```
+
+2. Update `src/config/database.js` with Sequelize setup
+3. Convert Mongoose models to Sequelize models
+4. Update environment variables with PostgreSQL connection string
+
+## 📝 Scripts
+
+- `npm start` - Start production server
+- `npm run dev` - Start development server with hot reload
+
+## 📄 License
+
+ISC
+
+> > > > > > > fc56e14c6de48a3e0f4b8c6e5c69bb3563786e1a
