@@ -312,7 +312,7 @@ exports.getStudent = async (req, res, next) => {
 
         // Multi-Tenant: Ensure student belongs to authenticated teacher
         if (!belongsToTenant(student, req.teacherId)) {
-            throw new ApiError('You are not allowed to access this student', 403);
+            throw new ApiError('Student not found', 404);
         }
 
         res.status(200).json({
@@ -376,7 +376,7 @@ exports.deleteStudent = async (req, res, next) => {
 
         // Multi-Tenant: Ensure student belongs to authenticated teacher
         if (!belongsToTenant(student, req.teacherId)) {
-            throw new ApiError('You are not allowed to delete this student', 403);
+            throw new ApiError('Student not found', 404);
         }
 
         // Multi-Tenant: Use scoped query for delete

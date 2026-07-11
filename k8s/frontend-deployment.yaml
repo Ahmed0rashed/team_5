@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: mohammededris/class-track-frontend:latest
+          image: omarmo20/class-track-frontend:latest
           ports:
             - containerPort: 3000
           env:

@@ -19,7 +19,7 @@ describe('POST /api/students', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({ fullName: 'Omar Student', grade: 'Grade 10', monthlyFee: 500 });
     expect(res.status).toBe(201);
-    expect(res.body.data.student.fullName).toBe('Omar Student');
+    expect(res.body.data.fullName).toBe('Omar Student');
   });
 
   it('should return 401 without token', async () => {
@@ -46,14 +46,14 @@ describe('GET /api/students', () => {
     await createStudent(t2._id, { fullName: 'Student C' });
     const res = await request(app).get('/api/students').set('Authorization', `Bearer ${token1}`);
     expect(res.status).toBe(200);
-    expect(res.body.data.students).toHaveLength(2);
+    expect(res.body.data).toHaveLength(2);
   });
 
   it('should return empty array when no students', async () => {
     const { token } = await createTeacherWithToken();
     const res = await request(app).get('/api/students').set('Authorization', `Bearer ${token}`);
     expect(res.status).toBe(200);
-    expect(res.body.data.students).toHaveLength(0);
+    expect(res.body.data).toHaveLength(0);
   });
 });
 
